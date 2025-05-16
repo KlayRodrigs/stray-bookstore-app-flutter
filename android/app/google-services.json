@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1874141067",
+    "project_id": "stray-bookstore",
+    "storage_bucket": "stray-bookstore.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1874141067:android:aac31d07e1fd0ce0c5598e",
+        "android_client_info": {
+          "package_name": "com.example.stray_bookstore_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5h9LYqmUtMeKIbh6HUE5fC8fpwnocW8o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
