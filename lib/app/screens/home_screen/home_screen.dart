@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:stray_bookstore_app/app/core/inject.dart';
 import 'package:stray_bookstore_app/app/core/router_manager.dart';
 import 'package:stray_bookstore_app/app/repositories/auth_repository.dart';
+import 'package:stray_bookstore_app/app/screens/home_screen/components/friend_count/friend_count_card.dart';
 import 'package:stray_bookstore_app/app/screens/home_screen/home_view_model.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -44,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: Center(child: Text(model!.currentUser?.email ?? "")),
+      body: Column(children: [Center(child: Text(model!.currentUser?.email ?? "")), FriendCountCard.create()]),
     );
   }
 }

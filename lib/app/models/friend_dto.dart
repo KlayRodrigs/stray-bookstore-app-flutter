@@ -5,4 +5,23 @@ class FriendDto {
   final String motherName;
   final String phone;
   final String fromWhere;
+
+  factory FriendDto.fromCollection(Map<String, dynamic> data, String id) {
+    return FriendDto(
+      id: id,
+      name: data['name'] ?? '',
+      motherName: data['motherName'] ?? '',
+      phone: data['phone'] ?? '',
+      fromWhere: data['fromWhere'] ?? '',
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'motherName': motherName,
+      'phone': phone,
+      'fromWhere': fromWhere,
+    };
+  }
 }

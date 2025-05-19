@@ -17,11 +17,11 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    pawTimer = Timer.periodic(const Duration(seconds: 2), (timer) {
+    pawTimer = Timer.periodic(const Duration(milliseconds: 200), (timer) {
       setState(() => pawCount++);
       if (pawCount >= 3) {
         pawTimer?.cancel();
-        Future.delayed(const Duration(milliseconds: 600), () {
+        Future.delayed(const Duration(milliseconds: 300), () {
           if (widget.onFinish != null) widget.onFinish!();
         });
       }

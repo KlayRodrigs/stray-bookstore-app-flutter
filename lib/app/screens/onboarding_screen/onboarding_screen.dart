@@ -21,8 +21,8 @@ class OnboardingScreen extends StatefulWidget {
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
   bool isLogin = true;
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+  final emailController = TextEditingController(text: "klayrodrigsdev@gmail.com");
+  final passwordController = TextEditingController(text: "Gabriel123@");
   bool showSplash = true;
 
   @override
