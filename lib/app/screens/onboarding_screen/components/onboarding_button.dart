@@ -19,7 +19,7 @@ class OnboardingButton extends StatelessWidget {
         onPressed: onPressed,
         child:
             isLoading
-                ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
+                ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.white))
                 : Text(text, style: const TextStyle(color: AppColors.white, fontSize: 18, fontWeight: FontWeight.bold)),
 
       ),

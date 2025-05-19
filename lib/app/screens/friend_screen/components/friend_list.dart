@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stray_bookstore_app/app/models/friend_dto.dart';
+import 'package:stray_bookstore_app/app/dtos/friend_dto.dart';
 import 'package:stray_bookstore_app/app/screens/friend_screen/components/friend_card.dart';
 import 'package:stray_bookstore_app/app/screens/friend_screen/friend_view_model.dart';
 import 'package:provider/provider.dart';

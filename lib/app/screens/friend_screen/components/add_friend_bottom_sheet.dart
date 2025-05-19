@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:stray_bookstore_app/app/models/friend_dto.dart';
+import 'package:stray_bookstore_app/app/dtos/friend_dto.dart';
 import 'package:stray_bookstore_app/app/shared/styles/app_colors.dart';
 import '../friend_view_model.dart';
 

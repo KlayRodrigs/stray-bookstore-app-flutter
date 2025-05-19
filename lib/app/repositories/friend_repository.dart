@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../models/friend_dto.dart';
+import '../dtos/friend_dto.dart';
 
 class FriendRepository {
   final _collection = FirebaseFirestore.instance.collection('friends');

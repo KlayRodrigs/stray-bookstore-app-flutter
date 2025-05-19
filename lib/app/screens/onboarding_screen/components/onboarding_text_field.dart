@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stray_bookstore_app/app/core/app_colors.dart';
 
 class OnboardingTextField extends StatelessWidget {
   final TextEditingController controller;
@@ -30,7 +31,7 @@ class OnboardingTextField extends StatelessWidget {
         prefixIcon: icon != null ? Icon(icon, color: Theme.of(context).primaryColor) : null,
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
         filled: true,
-        fillColor: enabled ? Colors.white : Colors.grey.shade100,
+        fillColor: enabled ? AppColors.white : AppColors.grey,
       ),
     );
   }

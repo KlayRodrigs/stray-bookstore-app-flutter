@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stray_bookstore_app/app/models/friend_dto.dart';
+import 'package:stray_bookstore_app/app/dtos/friend_dto.dart';
 import 'package:stray_bookstore_app/app/shared/styles/app_colors.dart';
 
 class FriendCard extends StatelessWidget {
@@ -13,7 +13,7 @@ class FriendCard extends StatelessWidget {
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-      color: AppColors.primary.withValues(alpha: 0.08),
+      color: Colors.blueGrey.withValues(alpha: 0.85),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         child: Row(
@@ -40,7 +40,7 @@ class FriendCard extends StatelessWidget {
             ),
             Column(
               children: [
-                IconButton(icon: const Icon(Icons.edit, color: AppColors.primaryOpacity), tooltip: 'Editar', onPressed: onEdit),
+                IconButton(icon: const Icon(Icons.edit, color: AppColors.white), tooltip: 'Editar', onPressed: onEdit),
                 IconButton(icon: const Icon(Icons.delete, color: AppColors.dangerColor), tooltip: 'Remover', onPressed: onDelete),
               ],
             ),

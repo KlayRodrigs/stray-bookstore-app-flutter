@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stray_bookstore_app/app/core/safe_notifier.dart';
-import '../../models/friend_dto.dart';
+import '../../dtos/friend_dto.dart';
 import '../../repositories/friend_repository.dart';
 
 enum FriendState {
