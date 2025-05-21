@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:stray_bookstore_app/app/core/app_colors.dart';
 import 'package:provider/provider.dart';
 import 'package:stray_bookstore_app/app/core/inject.dart';
 import 'package:stray_bookstore_app/app/repositories/comic_repository.dart';
@@ -9,6 +8,7 @@ import 'package:stray_bookstore_app/app/screens/comic_screen/components/comic_no
 import 'package:stray_bookstore_app/app/screens/comic_screen/components/add_comic_bottom_sheet.dart';
 import 'package:stray_bookstore_app/app/screens/comic_screen/components/comic_card.dart';
 import 'package:stray_bookstore_app/app/dtos/box_dto.dart';
+import 'package:stray_bookstore_app/app/shared/styles/app_colors.dart';
 
 class ComicScreen extends StatefulWidget {
   final List<BoxDto> boxesFromHome;

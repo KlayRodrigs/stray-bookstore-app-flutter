@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:stray_bookstore_app/app/core/safe_notifier.dart';
 import 'package:stray_bookstore_app/app/repositories/auth_repository.dart';
+import 'package:stray_bookstore_app/app/repositories/borrow_repository.dart';
 import 'package:stray_bookstore_app/app/repositories/comic_repository.dart';
 import 'package:stray_bookstore_app/app/repositories/friend_repository.dart';
 import 'package:stray_bookstore_app/app/repositories/box_repository.dart';
@@ -18,7 +19,13 @@ enum HomeState {
 }
 
 class HomeViewModel with ChangeNotifier, SafeNotifierMixin {
-  HomeViewModel({required this.authRepository, required this.friendRepository, required this.comicRepository, required this.boxRepository});
+  HomeViewModel({
+    required this.authRepository,
+    required this.friendRepository,
+    required this.comicRepository,
+    required this.boxRepository,
+    required this.borrowRepository,
+  });
 
   HomeState state = HomeState.content;
 
@@ -26,10 +33,12 @@ class HomeViewModel with ChangeNotifier, SafeNotifierMixin {
   final FriendRepository friendRepository;
   final ComicRepository comicRepository;
   final BoxRepository boxRepository;
+  final BorrowRepository borrowRepository;
 
   int friendCount = 0;
   int comicCount = 0;
   int boxCount = 0;
+  int borrowCount = 0;
   List<BoxDto> boxes = [];
 
   User? get currentUser => authRepository.getCurrentUser();
@@ -71,6 +80,17 @@ class HomeViewModel with ChangeNotifier, SafeNotifierMixin {
       emitState(HomeState.loading);
       boxes = await boxRepository.getBoxes();
       boxCount = boxes.length;
+      emitState(HomeState.content);
+    } catch (e) {
+      emitState(HomeState.error);
+    }
+  }
+
+  Future<void> fetchBorrowCount() async {
+    try {
+      emitState(HomeState.loading);
+      final borrows = await borrowRepository.getBorrows();
+      borrowCount = borrows.length;
       emitState(HomeState.content);
     } catch (e) {
       emitState(HomeState.error);

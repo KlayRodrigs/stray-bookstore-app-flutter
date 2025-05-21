@@ -90,7 +90,7 @@ class _FriendScreenState extends State<FriendScreen> {
                       context: context,
                       isScrollControlled: true,
                       backgroundColor: Colors.transparent,
-                      builder: (context) => AddFriendBottomSheet(viewModel: model!),
+                      builder: (context) => AddFriendBottomSheet(onSave: model!.addFriend),
                     ),
                 tooltip: 'Cadastrar novo amigo',
                 child: const Icon(Icons.add, color: Colors.white),

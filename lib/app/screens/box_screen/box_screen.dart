@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:stray_bookstore_app/app/core/app_colors.dart';
 import 'package:provider/provider.dart';
-import '../../core/inject.dart';
-import '../../repositories/box_repository.dart';
+import 'package:stray_bookstore_app/app/core/inject.dart';
+import 'package:stray_bookstore_app/app/repositories/box_repository.dart';
+import 'package:stray_bookstore_app/app/shared/styles/app_colors.dart';
 import 'box_view_model.dart';
 import 'components/add_box_bottom_sheet.dart';
 import 'components/box_card.dart';
@@ -92,13 +92,15 @@ class _BoxScreenState extends State<BoxScreen> {
       floatingActionButton:
           (!model!.state.isError)
               ? FloatingActionButton(
-                backgroundColor: Colors.teal.withOpacity(0.85),
+                backgroundColor: Colors.teal.withValues(alpha: 0.85),
                 onPressed:
                     () => showModalBottomSheet(
                       context: context,
                       isScrollControlled: true,
                       backgroundColor: Colors.transparent,
-                      builder: (context) => AddBoxBottomSheet(viewModel: model!),
+                      builder:
+                          (context) =>
+                              AddBoxBottomSheet(onSave: model!.addBox, onEdit: (box) => model!.updateBox(box.id!, box), onDelete: (box) => model!.removeBox(box.id!)),
                     ),
                 tooltip: 'Cadastrar nova caixa',
                 child: const Icon(Icons.add, color: Colors.white),

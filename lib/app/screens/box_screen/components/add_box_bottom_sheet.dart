@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../../../dtos/box_dto.dart';
-import '../box_view_model.dart';
+import 'package:stray_bookstore_app/app/dtos/box_dto.dart';
 
 class AddBoxBottomSheet extends StatefulWidget {
-  final BoxViewModel viewModel;
+  const AddBoxBottomSheet({super.key, required this.onSave, this.onEdit, this.onDelete, this.initialBox});
+  final Future<void> Function(BoxDto box) onSave;
+  final Future<void> Function(BoxDto box)? onEdit;
+  final Future<void> Function(BoxDto box)? onDelete;
   final BoxDto? initialBox;
-  const AddBoxBottomSheet({super.key, required this.viewModel, this.initialBox});
 
   @override
   State<AddBoxBottomSheet> createState() => _AddBoxBottomSheetState();
@@ -80,12 +81,9 @@ class _AddBoxBottomSheetState extends State<AddBoxBottomSheet> {
                         if (_formKey.currentState!.validate()) {
                           setState(() => loading = true);
                           if (widget.initialBox == null) {
-                            await widget.viewModel.addBox(BoxDto(label: label, boxNumber: int.tryParse(boxNumber) ?? 0, color: color));
+                            await widget.onSave(BoxDto(label: label, boxNumber: int.tryParse(boxNumber) ?? 0, color: color));
                           } else {
-                            await widget.viewModel.updateBox(
-                              widget.initialBox!.id!,
-                              BoxDto(label: label, boxNumber: int.tryParse(boxNumber) ?? 0, color: color, id: widget.initialBox!.id),
-                            );
+                            await widget.onEdit!(BoxDto(label: label, boxNumber: int.tryParse(boxNumber) ?? 0, color: color, id: widget.initialBox!.id));
                           }
                           setState(() => loading = false);
                           if (context.mounted) Navigator.of(context).pop();
@@ -103,7 +101,7 @@ class _AddBoxBottomSheetState extends State<AddBoxBottomSheet> {
                     loading
                         ? null
                         : () async {
-                          await widget.viewModel.removeBox(widget.initialBox!.id!);
+                          await widget.onDelete!(BoxDto(label: label, boxNumber: int.tryParse(boxNumber) ?? 0, color: color, id: widget.initialBox!.id));
                           if (context.mounted) Navigator.of(context).pop();
                         },
                 icon: const Icon(Icons.delete, color: Colors.red),

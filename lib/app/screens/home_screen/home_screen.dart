@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:stray_bookstore_app/app/core/inject.dart';
 import 'package:stray_bookstore_app/app/core/router_manager.dart';
 import 'package:stray_bookstore_app/app/repositories/auth_repository.dart';
+import 'package:stray_bookstore_app/app/repositories/borrow_repository.dart';
 import 'package:stray_bookstore_app/app/repositories/box_repository.dart';
 import 'package:stray_bookstore_app/app/repositories/comic_repository.dart';
 import 'package:stray_bookstore_app/app/repositories/friend_repository.dart';
@@ -20,6 +21,7 @@ class HomeScreen extends StatefulWidget {
             friendRepository: inject<FriendRepository>(),
             comicRepository: inject<ComicRepository>(),
             boxRepository: inject<BoxRepository>(),
+            borrowRepository: inject<BorrowRepository>(),
           ),
       child: const HomeScreen(),
     );
@@ -42,6 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
       model!.fetchFriendCount();
       model!.fetchComicCount();
       model!.fetchBoxCount();
+      model!.fetchBorrowCount();
     });
   }
 
@@ -62,43 +65,65 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Center(child: Text(model!.currentUser?.email ?? "")),
-          DashboardCountCard(
-            color: Colors.blueGrey.withValues(alpha: 0.85),
-            title: 'Amigos cadastrados',
-            icon: Icons.people,
-            onTap: () => router.navigateToFriendScreen(context),
-            count: model!.friendCount,
-            isLoading: model!.state.isLoading,
-            isError: model!.state.isError,
-          ),
-          Row(
-            children: [
-              DashboardCountCard(
-                color: Colors.orange.withValues(alpha: 0.85),
-                title: 'Revistas cadastradas',
-                width: 180,
-                icon: Icons.menu_book,
-                onTap: () => router.navigateToComicScreen(context, model!.boxes),
-                count: model!.comicCount,
-                isLoading: model!.state.isLoading,
-                isError: model!.state.isError,
-              ),
-              DashboardCountCard(
-                color: Colors.teal.withValues(alpha: 0.85),
-                title: 'Caixas cadastradas',
-                width: 180,
-                icon: Icons.storage,
-                onTap: () => router.navigateToBoxScreen(context),
-                count: model!.boxCount,
-                isLoading: model!.state.isLoading,
-                isError: model!.state.isError,
-              ),
-            ],
-          ),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            DashboardCountCard(
+              color: Colors.blueGrey.withValues(alpha: 0.85),
+              title: 'Amigos cadastrados',
+              icon: Icons.people,
+              onTap: () async {
+                await router.navigateToFriendScreen(context);
+                await model!.fetchFriendCount();
+              },
+              count: model!.friendCount,
+              isLoading: model!.state.isLoading,
+              isError: model!.state.isError,
+            ),
+            Row(
+              children: [
+                DashboardCountCard(
+                  color: Colors.orange.withValues(alpha: 0.85),
+                  title: 'Revistas cadastradas',
+                  width: 180,
+                  icon: Icons.menu_book,
+                  onTap: () async {
+                    await router.navigateToComicScreen(context, model!.boxes);
+                    await model!.fetchComicCount();
+                  },
+                  count: model!.comicCount,
+                  isLoading: model!.state.isLoading,
+                  isError: model!.state.isError,
+                ),
+                DashboardCountCard(
+                  color: Colors.teal.withValues(alpha: 0.85),
+                  title: 'Caixas cadastradas',
+                  width: 180,
+                  icon: Icons.storage,
+                  onTap: () async {
+                    await router.navigateToBoxScreen(context);
+                    await model!.fetchBoxCount();
+                  },
+                  count: model!.boxCount,
+                  isLoading: model!.state.isLoading,
+                  isError: model!.state.isError,
+                ),
+              ],
+            ),
+            DashboardCountCard(
+              color: Colors.deepPurple.withValues(alpha: 0.85),
+              title: 'Empréstimos cadastrados',
+              icon: Icons.assignment_returned,
+              onTap: () async {
+                await router.navigateToBorrowScreen(context);
+                await model!.fetchBorrowCount();
+              },
+              count: model!.borrowCount,
+              isLoading: model!.state.isLoading,
+              isError: model!.state.isError,
+            ),
+          ],
+        ),
       ),
     );
   }

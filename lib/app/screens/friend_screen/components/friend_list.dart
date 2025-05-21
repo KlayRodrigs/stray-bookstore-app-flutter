@@ -3,6 +3,7 @@ import 'package:stray_bookstore_app/app/dtos/friend_dto.dart';
 import 'package:stray_bookstore_app/app/screens/friend_screen/components/friend_card.dart';
 import 'package:stray_bookstore_app/app/screens/friend_screen/friend_view_model.dart';
 import 'package:provider/provider.dart';
+import 'package:stray_bookstore_app/app/shared/styles/app_colors.dart';
 import 'add_friend_bottom_sheet.dart';
 
 class FriendList extends StatelessWidget {
@@ -14,7 +15,13 @@ class FriendList extends StatelessWidget {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => AddFriendBottomSheet(viewModel: viewModel, initialFriend: friend),
+      builder:
+          (context) => AddFriendBottomSheet(
+            onSave: viewModel.addFriend,
+            onEdit: (friend) => viewModel.updateFriend(friend),
+            onDelete: (friendId) => viewModel.removeFriend(friendId),
+            initialFriend: friend,
+          ),
     );
   }
 
@@ -26,8 +33,12 @@ class FriendList extends StatelessWidget {
             title: const Text('Remover amigo'),
             content: Text('Tem certeza que deseja remover "${friend.name}"?'),
             actions: [
-              TextButton(onPressed: () => Navigator.of(ctx).pop(false), child: const Text('Cancelar')),
-              ElevatedButton(onPressed: () => Navigator.of(ctx).pop(true), style: ElevatedButton.styleFrom(backgroundColor: Colors.red), child: const Text('Remover')),
+              TextButton(onPressed: () => Navigator.of(ctx).pop(false), child: const Text('Cancelar', style: TextStyle(color: AppColors.black))),
+              ElevatedButton(
+                onPressed: () => Navigator.of(ctx).pop(true),
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                child: const Text('Remover', style: TextStyle(color: AppColors.white)),
+              ),
             ],
           ),
     );

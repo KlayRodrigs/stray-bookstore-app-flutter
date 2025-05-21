@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:stray_bookstore_app/app/core/app_colors.dart';
-import '../../../../../app/dtos/comic_dto.dart';
-import '../comic_view_model.dart';
+import 'package:stray_bookstore_app/app/dtos/box_dto.dart';
+import 'package:stray_bookstore_app/app/dtos/comic_dto.dart';
+import 'package:stray_bookstore_app/app/screens/comic_screen/comic_view_model.dart';
+import 'package:stray_bookstore_app/app/shared/styles/app_colors.dart';
 import 'add_comic_bottom_sheet.dart';
-
-import '../../../dtos/box_dto.dart';
 
 class ComicCard extends StatelessWidget {
   final ComicDto comic;

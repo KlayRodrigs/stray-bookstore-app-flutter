@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stray_bookstore_app/app/dtos/friend_dto.dart';
 import 'package:stray_bookstore_app/app/shared/styles/app_colors.dart';
-import '../friend_view_model.dart';
 
 class AddFriendBottomSheet extends StatefulWidget {
-  final FriendViewModel viewModel;
+  final Future<void> Function(FriendDto friend) onSave;
+  final Future<void> Function(FriendDto friend)? onEdit;
+  final Future<void> Function(String friendId)? onDelete;
   final FriendDto? initialFriend;
-  const AddFriendBottomSheet({super.key, required this.viewModel, this.initialFriend});
+  const AddFriendBottomSheet({super.key, required this.onSave, this.onEdit, this.onDelete, this.initialFriend});
 
   @override
   State<AddFriendBottomSheet> createState() => _AddFriendBottomSheetState();
@@ -51,9 +52,11 @@ class _AddFriendBottomSheetState extends State<AddFriendBottomSheet> {
         fromWhere: fromWhereController.text.trim(),
       );
       if (isEditing) {
-        await widget.viewModel.updateFriend(friend);
+        if (widget.onEdit != null) {
+          await widget.onEdit!(friend);
+        }
       } else {
-        await widget.viewModel.addFriend(friend);
+        await widget.onSave(friend);
       }
       if (mounted) Navigator.of(context).pop();
       setState(() => isLoading = false);
@@ -74,7 +77,9 @@ class _AddFriendBottomSheetState extends State<AddFriendBottomSheet> {
           ),
     );
     if (confirmed == true) {
-      await widget.viewModel.removeFriend(widget.initialFriend!.id);
+      if (widget.onDelete != null) {
+        await widget.onDelete!(widget.initialFriend!.id);
+      }
       if (mounted) Navigator.of(context).pop();
     }
   }

@@ -75,7 +75,7 @@ class _AddComicBottomSheetState extends State<AddComicBottomSheet> {
             const SizedBox(height: 12),
 
             DropdownButtonFormField<String>(
-              value: boxId,
+              value: boxes.any((box) => box.id == boxId) ? boxId : null,
               decoration: const InputDecoration(labelText: 'Caixa', border: OutlineInputBorder()),
               items: boxes.map((box) => DropdownMenuItem<String>(value: box.id, child: Text('${box.label} (Nº ${box.boxNumber}, ${box.color})'))).toList(),
               onChanged: (v) => setState(() => boxId = v),

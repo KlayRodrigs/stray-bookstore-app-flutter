@@ -43,13 +43,11 @@ class OnboardingForm extends StatelessWidget {
                 Center(
                   child: Column(
                     children: [
-                      ClipRRect(borderRadius: BorderRadius.circular(20), child: Image.asset('assets/images/logo.png', height: 90, fit: BoxFit.contain)),
+                      ClipRRect(borderRadius: BorderRadius.circular(20), child: Image.asset('assets/images/logo.png', height: 200, fit: BoxFit.contain)),
                       const SizedBox(height: 20),
                     ],
                   ),
                 ),
-                Text(title, style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold)),
-                const SizedBox(height: 32),
                 OnboardingTextField(controller: emailController, label: 'Email', enabled: !isLoading, keyboardType: TextInputType.emailAddress, icon: Icons.email),
                 const SizedBox(height: 16),
                 OnboardingTextField(controller: passwordController, label: 'Senha', enabled: !isLoading, obscureText: true, icon: Icons.lock),
@@ -62,7 +60,6 @@ class OnboardingForm extends StatelessWidget {
                     onPressed: isLoading ? null : () => onSwitchMode?.call(),
                     style: ButtonStyle(backgroundColor: WidgetStatePropertyAll(AppColors.primary)),
                     child: Text(switchModeText, style: const TextStyle(color: AppColors.white, fontSize: 16)),
-
                   ),
               ],
             ),

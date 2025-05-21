@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stray_bookstore_app/app/core/app_colors.dart';
+import 'package:stray_bookstore_app/app/shared/styles/app_colors.dart';
 
 class OnboardingTextField extends StatelessWidget {
   final TextEditingController controller;

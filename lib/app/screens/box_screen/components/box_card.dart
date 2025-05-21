@@ -29,7 +29,13 @@ class BoxCard extends StatelessWidget {
                     context: parentContext,
                     isScrollControlled: true,
                     backgroundColor: Colors.transparent,
-                    builder: (context) => AddBoxBottomSheet(viewModel: viewModel, initialBox: box),
+                    builder:
+                        (context) => AddBoxBottomSheet(
+                          onSave: viewModel.addBox,
+                          onEdit: (box) => viewModel.updateBox(box.id!, box),
+                          onDelete: (box) => viewModel.removeBox(box.id!),
+                          initialBox: box,
+                        ),
                   ),
               tooltip: 'Editar',
             ),
