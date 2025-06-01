@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:stray_bookstore_app/app/core/safe_notifier.dart';
 import 'package:stray_bookstore_app/app/repositories/auth_repository.dart';
 import 'package:stray_bookstore_app/app/repositories/errors/signup_error.dart';
 
@@ -13,7 +14,7 @@ enum OnboardingState {
   bool get isError => this == OnboardingState.error;
 }
 
-class OnboardingViewModel with ChangeNotifier {
+class OnboardingViewModel with ChangeNotifier, SafeNotifierMixin {
   OnboardingViewModel({required this.authRepository});
   final AuthRepository authRepository;
 
@@ -21,9 +22,9 @@ class OnboardingViewModel with ChangeNotifier {
   String? errorMessage;
 
   Future<void> login(String email, String password) async {
-    state = OnboardingState.loading;
+    emitState(OnboardingState.loading);
     errorMessage = null;
-    notifyListeners();
+    notify();
     try {
       if (email.isEmpty) {
         throw FirebaseAuthException(code: 'invalid-email', message: 'O email não pode estar vazio');
@@ -32,45 +33,47 @@ class OnboardingViewModel with ChangeNotifier {
         throw FirebaseAuthException(code: 'wrong-password', message: 'A senha não pode estar vazia');
       }
       await authRepository.signIn(email, password);
-      state = OnboardingState.content;
+      emitState(OnboardingState.content);
       errorMessage = null;
     } on FirebaseAuthException catch (e) {
-      state = OnboardingState.error;
+      emitState(OnboardingState.error);
       errorMessage = e.message;
     } catch (e) {
-      state = OnboardingState.error;
+      emitState(OnboardingState.error);
       errorMessage = 'Erro desconhecido: ${e.toString()}';
     }
-    notifyListeners();
+    notify();
   }
 
   Future<void> signup(String email, String password) async {
-    state = OnboardingState.loading;
+    emitState(OnboardingState.loading);
     try {
       final userCredential = await authRepository.signUp(email, password);
       if (userCredential != null) {
-        state = OnboardingState.content;
+        emitState(OnboardingState.content);
       } else {
-        state = OnboardingState.error;
+        emitState(OnboardingState.error);
       }
     } on SignupError catch (e) {
-      state = OnboardingState.error;
+      emitState(OnboardingState.error);
       errorMessage = e.message;
     } on FirebaseAuthException catch (e) {
-      state = OnboardingState.error;
+      emitState(OnboardingState.error);
       errorMessage = e.message;
     } catch (e) {
-      state = OnboardingState.error;
+      emitState(OnboardingState.error);
       errorMessage = 'Erro desconhecido: ${e.toString()}';
     }
-    notifyListeners();
+    notify();
   }
 
   void clearError() {
     errorMessage = null;
-    if (state == OnboardingState.error) {
-      state = OnboardingState.content;
-      notifyListeners();
-    }
+    if (state == OnboardingState.error) emitState(OnboardingState.content);
+  }
+
+  void emitState(OnboardingState state) {
+    this.state = state;
+    notify();
   }
 }

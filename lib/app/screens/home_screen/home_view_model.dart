@@ -53,48 +53,35 @@ class HomeViewModel with ChangeNotifier, SafeNotifierMixin {
     }
   }
 
-  Future<void> fetchFriendCount() async {
+  Future<void> fetchAllData() async {
     try {
       emitState(HomeState.loading);
-      final friends = await friendRepository.getFriends();
-      friendCount = friends.length;
+      await Future.wait([fetchBorrowCount(), fetchBoxCount(), fetchComicCount(), fetchFriendCount()]);
       emitState(HomeState.content);
     } catch (e) {
       emitState(HomeState.error);
+      debugPrint("Ocorreu um erro ao fazer os fetches");
     }
+  }
+
+  Future<void> fetchFriendCount() async {
+    final friends = await friendRepository.getFriends();
+    friendCount = friends.length;
   }
 
   Future<void> fetchComicCount() async {
-    try {
-      emitState(HomeState.loading);
-      final comics = await comicRepository.getComics();
-      comicCount = comics.length;
-      emitState(HomeState.content);
-    } catch (e) {
-      emitState(HomeState.error);
-    }
+    final comics = await comicRepository.getComics();
+    comicCount = comics.length;
   }
 
   Future<void> fetchBoxCount() async {
-    try {
-      emitState(HomeState.loading);
-      boxes = await boxRepository.getBoxes();
-      boxCount = boxes.length;
-      emitState(HomeState.content);
-    } catch (e) {
-      emitState(HomeState.error);
-    }
+    boxes = await boxRepository.getBoxes();
+    boxCount = boxes.length;
   }
 
   Future<void> fetchBorrowCount() async {
-    try {
-      emitState(HomeState.loading);
-      final borrows = await borrowRepository.getBorrows();
-      borrowCount = borrows.length;
-      emitState(HomeState.content);
-    } catch (e) {
-      emitState(HomeState.error);
-    }
+    final borrows = await borrowRepository.getBorrows();
+    borrowCount = borrows.length;
   }
 
   emitState(HomeState state) {

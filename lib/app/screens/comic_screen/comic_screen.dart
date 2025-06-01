@@ -9,6 +9,7 @@ import 'package:stray_bookstore_app/app/screens/comic_screen/components/add_comi
 import 'package:stray_bookstore_app/app/screens/comic_screen/components/comic_card.dart';
 import 'package:stray_bookstore_app/app/dtos/box_dto.dart';
 import 'package:stray_bookstore_app/app/shared/styles/app_colors.dart';
+import 'package:stray_bookstore_app/app/shared/widgets/error_state_widget.dart';
 
 class ComicScreen extends StatefulWidget {
   final List<BoxDto> boxesFromHome;
@@ -40,40 +41,52 @@ class _ComicScreenState extends State<ComicScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFFF6F8FA),
       appBar: AppBar(title: const Text('Revistas'), backgroundColor: AppColors.orange400),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (model!.state.isLoading)
-              SizedBox(height: _bodyHeight, child: const Center(child: CircularProgressIndicator(color: AppColors.orange)))
-            else if (model!.state.isError)
-              SizedBox(height: _bodyHeight, child: Center(child: ComicErrorState(message: model!.errorMessage, onRetry: () => model!.fetchComics())))
-            else if (model!.comics.isEmpty)
-              SizedBox(height: _bodyHeight, child: const Center(child: ComicNotFound()))
-            else
-              Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: Column(
-                  children: [
-                    Text(
-                      'Você possui ${model!.comics.length} revista(s) cadastrada(s)',
-                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.orange),
-                    ),
-                    const SizedBox(height: 16),
-                    ...model!.comics.map(
-                      (comic) => ComicCard(
-                        comic: comic,
-                        viewModel: model!,
-                        parentContext: context,
-                        box: boxes.firstWhere((b) => b.id == comic.boxId, orElse: () => BoxDto(label: 'Não encontrada', boxNumber: 0, color: '', id: null)),
+      body: Column(
+        children: [
+          if (model!.state.isError)
+            ErrorStateWidget(
+              onTryAgain: () async {
+                await model!.fetchComics();
+              },
+            ),
+
+          if (model!.state.isContent)
+            SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (model!.state.isLoading)
+                    SizedBox(height: _bodyHeight, child: const Center(child: CircularProgressIndicator(color: AppColors.orange)))
+                  else if (model!.state.isError)
+                    SizedBox(height: _bodyHeight, child: Center(child: ComicErrorState(message: model!.errorMessage, onRetry: () => model!.fetchComics())))
+                  else if (model!.comics.isEmpty)
+                    SizedBox(height: _bodyHeight, child: const Center(child: ComicNotFound()))
+                  else
+                    Padding(
+                      padding: const EdgeInsets.all(24.0),
+                      child: Column(
+                        children: [
+                          Text(
+                            'Você possui ${model!.comics.length} revista(s) cadastrada(s)',
+                            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.orange),
+                          ),
+                          const SizedBox(height: 16),
+                          ...model!.comics.map(
+                            (comic) => ComicCard(
+                              comic: comic,
+                              viewModel: model!,
+                              parentContext: context,
+                              box: boxes.firstWhere((b) => b.id == comic.boxId, orElse: () => BoxDto(label: 'Não encontrada', boxNumber: 0, color: '', id: null)),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
+                ],
               ),
-          ],
-        ),
+            ),
+        ],
       ),
 
       floatingActionButton:

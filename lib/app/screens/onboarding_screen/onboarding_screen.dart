@@ -3,9 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:stray_bookstore_app/app/repositories/auth_repository.dart';
 import 'package:stray_bookstore_app/app/screens/onboarding_screen/onboarding_view_model.dart';
 import 'package:stray_bookstore_app/app/screens/onboarding_screen/components/onboarding_form.dart';
-import 'package:stray_bookstore_app/app/shared/styles/app_colors.dart';
 import 'package:stray_bookstore_app/app/core/inject.dart';
 import 'package:stray_bookstore_app/app/core/router_manager.dart';
+import 'package:stray_bookstore_app/app/shared/widgets/error_state_widget.dart';
 import 'package:stray_bookstore_app/app/shared/widgets/splash_screen.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -42,20 +42,20 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.watch<OnboardingViewModel>();
+    final model = context.watch<OnboardingViewModel>();
 
     void submit(BuildContext context) async {
       FocusScope.of(context).unfocus();
       if (isLogin) {
-        await viewModel.login(emailController.text, passwordController.text);
-        if (viewModel.state.isContent && viewModel.errorMessage == null) {
+        await model.login(emailController.text, passwordController.text);
+        if (model.state.isContent && model.errorMessage == null) {
           if (context.mounted) {
             RouterManager().navigateToHomeScreen(context);
           }
         }
       } else {
-        await viewModel.signup(emailController.text, passwordController.text);
-        if (viewModel.state.isContent && viewModel.errorMessage == null) {
+        await model.signup(emailController.text, passwordController.text);
+        if (model.state.isContent && model.errorMessage == null) {
           setState(() => isLogin = true);
           if (context.mounted) {
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Cadastro realizado com sucesso!')));
@@ -67,28 +67,42 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     if (showSplash) {
       return SplashScreen(onFinish: () => setState(() => showSplash = false));
     }
+
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: BoxDecoration(gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [AppColors.primary, AppColors.secondary])),
-        child: Center(
-          child: OnboardingForm(
-            emailController: emailController,
-            passwordController: passwordController,
-            title: isLogin ? 'Entrar' : 'Cadastrar',
-            buttonText: isLogin ? 'Entrar' : 'Cadastrar',
-            onSubmit: (context) => submit(context),
-            isLoading: viewModel.state.isLoading,
-            errorMessage: viewModel.errorMessage,
-            onSwitchMode: () {
-              setState(() {
-                isLogin = !isLogin;
-                viewModel.clearError();
-              });
-            },
-            switchModeText: isLogin ? 'Não tem conta? Cadastre-se' : 'Já tem conta? Entrar',
-          ),
+      body: Center(
+        child: Column(
+          children: [
+            if (model.state.isError)
+              ErrorStateWidget(
+                onTryAgain: () async {
+                  if (isLogin) {
+                    await model.login(emailController.text, passwordController.text);
+                  } else {
+                    await model.signup(emailController.text, passwordController.text);
+                  }
+                },
+              ),
+
+            if (model.state.isContent || model.state.isLoading)
+              Expanded(
+                child: OnboardingForm(
+                  emailController: emailController,
+                  passwordController: passwordController,
+                  title: isLogin ? 'Entrar' : 'Cadastrar',
+                  buttonText: isLogin ? 'Entrar' : 'Cadastrar',
+                  onSubmit: (context) => submit(context),
+                  isLoading: model.state.isLoading,
+                  errorMessage: model.errorMessage,
+                  onSwitchMode: () {
+                    setState(() {
+                      isLogin = !isLogin;
+                      model.clearError();
+                    });
+                  },
+                  switchModeText: isLogin ? 'Não tem conta? Cadastre-se' : 'Já tem conta? Entrar',
+                ),
+              ),
+          ],
         ),
       ),
     );

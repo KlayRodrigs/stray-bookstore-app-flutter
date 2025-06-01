@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:stray_bookstore_app/app/core/inject.dart';
 import 'package:stray_bookstore_app/app/repositories/box_repository.dart';
 import 'package:stray_bookstore_app/app/shared/styles/app_colors.dart';
+import 'package:stray_bookstore_app/app/shared/widgets/error_state_widget.dart';
 import 'box_view_model.dart';
 import 'components/add_box_bottom_sheet.dart';
 import 'components/box_card.dart';
@@ -35,59 +36,71 @@ class _BoxScreenState extends State<BoxScreen> {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(title: const Text('Caixas'), backgroundColor: AppColors.teal85),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 8),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              if (model!.state.isLoading)
-                SizedBox(height: _bodyHeight, child: const Center(child: CircularProgressIndicator(color: AppColors.orange)))
-              else if (model!.state.isError)
-                SizedBox(
-                  height: _bodyHeight,
-                  child: Center(
-                    child: Card(
-                      color: Colors.orange.withValues(alpha: 0.10),
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-                      child: Padding(
+      body: Column(
+        children: [
+          if (model!.state.isError)
+            ErrorStateWidget(
+              onTryAgain: () async {
+                await model!.fetchBoxes();
+              },
+            ),
+
+          if (model!.state.isContent)
+            SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (model!.state.isLoading)
+                      SizedBox(height: _bodyHeight, child: const Center(child: CircularProgressIndicator(color: AppColors.orange)))
+                    else if (model!.state.isError)
+                      SizedBox(
+                        height: _bodyHeight,
+                        child: Center(
+                          child: Card(
+                            color: Colors.orange.withValues(alpha: 0.10),
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(24.0),
+                              child: Text(model!.errorMessage ?? 'Erro ao buscar caixas', style: const TextStyle(color: AppColors.orange)),
+                            ),
+                          ),
+                        ),
+                      )
+                    else if (model!.boxes.isEmpty)
+                      SizedBox(
+                        height: _bodyHeight,
+                        child: Center(
+                          child: Card(
+                            color: Colors.orange.withValues(alpha: 0.10),
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+                            child: const Padding(padding: EdgeInsets.all(24.0), child: Text('Nenhuma caixa cadastrada')),
+                          ),
+                        ),
+                      )
+                    else
+                      Padding(
                         padding: const EdgeInsets.all(24.0),
-                        child: Text(model!.errorMessage ?? 'Erro ao buscar caixas', style: const TextStyle(color: AppColors.orange)),
+                        child: Column(
+                          children: [
+                            Text(
+                              'Você possui ${model!.boxes.length} caixa(s) cadastrada(s)',
+                              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.teal),
+                            ),
+                            const SizedBox(height: 16),
+                            ...model!.boxes.map((box) => BoxCard(box: box, viewModel: model!, parentContext: context)),
+                          ],
+                        ),
                       ),
-                    ),
-                  ),
-                )
-              else if (model!.boxes.isEmpty)
-                SizedBox(
-                  height: _bodyHeight,
-                  child: Center(
-                    child: Card(
-                      color: Colors.orange.withValues(alpha: 0.10),
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-                      child: const Padding(padding: EdgeInsets.all(24.0), child: Text('Nenhuma caixa cadastrada')),
-                    ),
-                  ),
-                )
-              else
-                Padding(
-                  padding: const EdgeInsets.all(24.0),
-                  child: Column(
-                    children: [
-                      Text(
-                        'Você possui ${model!.boxes.length} caixa(s) cadastrada(s)',
-                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.teal),
-                      ),
-                      const SizedBox(height: 16),
-                      ...model!.boxes.map((box) => BoxCard(box: box, viewModel: model!, parentContext: context)),
-                    ],
-                  ),
+                  ],
                 ),
-            ],
-          ),
-        ),
+              ),
+            ),
+        ],
       ),
       floatingActionButton:
           (!model!.state.isError)

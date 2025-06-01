@@ -6,6 +6,7 @@ import 'package:stray_bookstore_app/app/screens/friend_screen/components/friend_
 import 'package:stray_bookstore_app/app/screens/friend_screen/components/friend_error_state.dart';
 import 'package:stray_bookstore_app/app/screens/friend_screen/components/add_friend_bottom_sheet.dart';
 import 'package:stray_bookstore_app/app/screens/friend_screen/components/friend_list.dart';
+import 'package:stray_bookstore_app/app/shared/widgets/error_state_widget.dart';
 import 'friend_view_model.dart';
 
 class FriendScreen extends StatefulWidget {
@@ -42,44 +43,59 @@ class _FriendScreenState extends State<FriendScreen> {
         iconTheme: const IconThemeData(color: Colors.white),
         titleTextStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 22),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 8),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              if (model!.state.isLoading)
-                SizedBox(height: _bodyHeight, child: const Center(child: CircularProgressIndicator(color: Colors.blueGrey)))
-              else if (model!.state.isError)
-                SizedBox(
-                  height: _bodyHeight,
-                  child: Center(
-                    child: Card(
-                      color: Colors.blueGrey.withValues(alpha: 0.10),
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-                      child: Padding(padding: const EdgeInsets.all(24.0), child: FriendErrorState(message: model!.errorMessage, onRetry: () => model!.fetchFriends())),
-                    ),
-                  ),
-                )
-              else if (model!.friends.isEmpty)
-                SizedBox(
-                  height: _bodyHeight,
-                  child: Center(
-                    child: Card(
-                      color: Colors.blueGrey.withValues(alpha: 0.10),
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-                      child: const Padding(padding: EdgeInsets.all(24.0), child: FriendNotFound()),
-                    ),
-                  ),
-                )
-              else
-                FriendList(friends: model!.friends),
-            ],
-          ),
-        ),
+      body: Column(
+        children: [
+          if (model!.state.isError)
+            ErrorStateWidget(
+              onTryAgain: () async {
+                await model!.fetchFriends();
+              },
+            ),
+
+          if (model!.state.isContent)
+            SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (model!.state.isLoading)
+                      SizedBox(height: _bodyHeight, child: const Center(child: CircularProgressIndicator(color: Colors.blueGrey)))
+                    else if (model!.state.isError)
+                      SizedBox(
+                        height: _bodyHeight,
+                        child: Center(
+                          child: Card(
+                            color: Colors.blueGrey.withValues(alpha: 0.10),
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(24.0),
+                              child: FriendErrorState(message: model!.errorMessage, onRetry: () => model!.fetchFriends()),
+                            ),
+                          ),
+                        ),
+                      )
+                    else if (model!.friends.isEmpty)
+                      SizedBox(
+                        height: _bodyHeight,
+                        child: Center(
+                          child: Card(
+                            color: Colors.blueGrey.withValues(alpha: 0.10),
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+                            child: const Padding(padding: EdgeInsets.all(24.0), child: FriendNotFound()),
+                          ),
+                        ),
+                      )
+                    else
+                      FriendList(friends: model!.friends),
+                  ],
+                ),
+              ),
+            ),
+        ],
       ),
       floatingActionButton:
           (!model!.state.isError)

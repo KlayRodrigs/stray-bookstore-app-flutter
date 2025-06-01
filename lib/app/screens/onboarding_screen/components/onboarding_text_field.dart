@@ -28,7 +28,7 @@ class OnboardingTextField extends StatelessWidget {
       keyboardType: keyboardType,
       decoration: InputDecoration(
         labelText: label,
-        prefixIcon: icon != null ? Icon(icon, color: Theme.of(context).primaryColor) : null,
+        prefixIcon: icon != null ? Icon(icon, color: Colors.black54) : null,
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
         filled: true,
         fillColor: enabled ? AppColors.white : AppColors.grey,
