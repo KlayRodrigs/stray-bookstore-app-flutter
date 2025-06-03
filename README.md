@@ -1,92 +1,97 @@
 # Stray Bookstore App
 
-Bem-vindo ao **Stray Bookstore App**! 📚
+Welcome to **Stray Bookstore App**! 📚
 
-Um aplicativo Flutter moderno para gestão pessoal de acervo, empréstimos e controle de dívidas, permitindo o cadastro de amigos, livros, revistas, caixas e dívidas, com operações completas de CRUD para cada módulo.
-
----
-
-## 📝 Requisitos Funcionais
-
-1. **Cadastro de Usuário**
-   - CRUD completo para usuários (criar conta, visualizar).
-   - Validação de e-mail e senha.
-
-2. **Cadastro de Amigos**
-   - CRUD para amigos que poderão pegar livros ou revistas emprestados.
-
-3. **Cadastro de Revistas**
-   - CRUD para revistas, podendo associá-las a caixas.
-
-4. **Cadastro de Caixas**
-   - CRUD para caixas, utilizadas para armazenar revistas.
-
-5. **Cadastro de Dívidas**
-   - CRUD para dívidas, vinculando amigos e itens emprestados (livros/revistas).
-
-6. **Empréstimos**
-   - Registrar e gerenciar empréstimo de itens para amigos.
-   - Histórico de empréstimos.
-
-7. **Autenticação e Sessão**
-   - Login seguro, logout e persistência de sessão.
+A modern Flutter application for personal collection management, loans, and debt control. It allows you to register friends, books, magazines, boxes, and debts, with full CRUD operations for each module.
 
 ---
 
-## 🛡️ Requisitos Não Funcionais
+## 📝 Functional Requirements
 
-1. **Segurança**
-   - Dados sensíveis protegidos com Firebase Authentication.
-   - CRUD seguro, com permissões adequadas por usuário.
+1. **User Registration**
+   - Full CRUD for users (create account, view).
+   - Email and password validation.
 
-2. **Usabilidade**
-   - Interface intuitiva, responsiva e amigável.
-   - Feedback visual para todas as operações (sucesso, erro, carregando).
+2. **Friends Registration**
+   - CRUD for friends who can borrow books or magazines.
+
+3. **Magazine Registration**
+   - CRUD for magazines, with the ability to associate them with boxes.
+
+4. **Box Registration**
+   - CRUD for boxes, used to store magazines.
+
+5. **Debts Registration**
+   - CRUD for debts, linking friends and borrowed items (books/magazines).
+
+6. **Loans**
+   - Register and manage item loans to friends.
+   - Loan history.
+
+7. **Authentication and Session**
+   - Secure login, logout, and session persistence.
+
+---
+
+## 🛡️ Non-Functional Requirements
+
+1. **Security**
+   - Sensitive data protected with Firebase Authentication.
+   - Secure CRUD, with proper permissions per user.
+
+2. **Usability**
+   - Intuitive, responsive, and user-friendly interface.
+   - Visual feedback for all operations (success, error, loading).
 
 3. **Performance**
-   - Operações CRUD rápidas e eficientes.
-   - Carregamento inicial ágil.
+   - Fast and efficient CRUD operations.
+   - Quick initial loading.
 
-4. **Compatibilidade**
-   - Suporte a Android e iOS.
-   - Adaptação a diferentes tamanhos de tela.
+4. **Compatibility**
+   - Supports Android and iOS.
+   - Adapts to different screen sizes.
 
-5. **Manutenibilidade**
-   - Código organizado, modular e fácil de manter.
-   - Uso do Provider para gerenciamento de estado.
+5. **Maintainability**
+   - Organized, modular, and easy-to-maintain code.
+   - Uses Provider for state management.
 
-6. **Escalabilidade**
-   - Estrutura pronta para expansão de funcionalidades, como catálogo online, notificações de devolução, relatórios, entre outros.
+6. **Scalability**
+   - Structure ready for feature expansion, such as online catalog, return notifications, reports, and more.
 
 ---
 
-## 🚀 Como Executar
+## 🚀 How to Run
 
-1. **Clone o repositório:**
+1. **Clone the repository:**
    ```bash
    git clone https://github.com/KlayRodrigs/stray_bookstore_app.git
    ```
-2. **Instale as dependências:**
+2. **Install dependencies:**
    ```bash
    flutter pub get
    ```
-3. **Execute o app:**
+3. **Run the app:**
    ```bash
    flutter run
    ```
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+## 🛠️ Technologies Used
 - Flutter
 - Firebase Authentication
 - Firestore
-- Provider (Gerenciamento de Estado)
+- Provider (State Management)
 
 ---
 
-## 🤝 Contribuição
-Pull requests são bem-vindos! Para grandes mudanças, abra uma issue para discutirmos o que deseja alterar.
+## 🧪 Tests & Coverage
+This project includes unit tests for the main business logic and data modules, ensuring reliability and maintainability. We always maintain **80%+ code coverage**. Run `./test_coverage.sh` to check the current coverage and view the HTML report.
 
-## 📄 Licença
+---
+
+## 🤝 Contribution
+Pull requests are welcome! For major changes, please open an issue to discuss what you would like to change.
+
+## 📄 License
 [MIT](LICENSE)
