@@ -83,6 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     onTap: () async {
                       await router.navigateToFriendScreen(context);
                       await model!.fetchFriendCount();
+                      setState(() {});
                     },
                     count: model!.friendCount,
                     isLoading: model!.state.isLoading,
@@ -98,6 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         onTap: () async {
                           await router.navigateToComicScreen(context, model!.boxes);
                           await model!.fetchComicCount();
+                          setState(() {});
                         },
                         count: model!.comicCount,
                         isLoading: model!.state.isLoading,
@@ -111,6 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         onTap: () async {
                           await router.navigateToBoxScreen(context);
                           await model!.fetchBoxCount();
+                          setState(() {});
                         },
                         count: model!.boxCount,
                         isLoading: model!.state.isLoading,
@@ -125,6 +128,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     onTap: () async {
                       await router.navigateToBorrowScreen(context);
                       await model!.fetchBorrowCount();
+                      setState(() {});
                     },
                     count: model!.borrowCount,
                     isLoading: model!.state.isLoading,
