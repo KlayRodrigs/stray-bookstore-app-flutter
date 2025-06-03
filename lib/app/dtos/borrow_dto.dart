@@ -22,4 +22,14 @@ class BorrowDto {
   Map<String, dynamic> toJson() {
     return {'friendId': friendId, 'comicId': comicId, 'loanDate': loanDate.toIso8601String(), 'returnDate': returnDate.toIso8601String()};
   }
+
+  factory BorrowDto.fakeData() {
+    return BorrowDto(
+      id: '1',
+      friendId: '1',
+      comicId: '1',
+      loanDate: DateTime.now(),
+      returnDate: DateTime.now(),
+    );
+  }
 }

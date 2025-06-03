@@ -24,4 +24,14 @@ class FriendDto {
       'fromWhere': fromWhere,
     };
   }
+
+  factory FriendDto.fakeData() {
+    return FriendDto(
+      id: '1',
+      name: 'John Doe',
+      motherName: 'Jane Doe',
+      phone: '123456789',
+      fromWhere: 'Brazil',
+    );
+  }
 }

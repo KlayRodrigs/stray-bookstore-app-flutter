@@ -13,4 +13,13 @@ class BoxDto {
   Map<String, dynamic> toJson() {
     return {'label': label, 'boxNumber': boxNumber, 'color': color};
   }
+
+  factory BoxDto.fakeData() {
+    return BoxDto(
+      id: '1',
+      label: 'Caixa 1',
+      boxNumber: 1,
+      color: 'Azul',
+    );
+  }
 }

@@ -24,4 +24,14 @@ class ComicDto {
       'publishDate': publishDate,
     };
   }
+
+  factory ComicDto.fakeData() {
+    return ComicDto(
+      id: '1',
+      boxId: '1',
+      collection: 'collection',
+      editionNumber: 1,
+      publishDate: '2022-01-01',
+    );
+  }
 }
