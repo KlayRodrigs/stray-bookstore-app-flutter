@@ -94,4 +94,4 @@ This project includes unit tests for the main business logic and data modules, e
 Pull requests are welcome! For major changes, please open an issue to discuss what you would like to change.
 
 ## 📄 License
-[MIT](LICENSE)
+MIT LICENSE
